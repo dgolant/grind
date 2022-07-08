@@ -2,6 +2,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.10",
+    "collections": "^5.1.13",
     "fake-useragent": "^1.0.1",
     "fs": "0.0.1-security",
     "typescript": "^4.6.4"
