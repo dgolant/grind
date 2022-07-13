@@ -4,54 +4,52 @@ const allCharsMatch = (map, charCount) => keysLengthEquals(map, charCount);
 import { tester } from './util';
 
 class TreeNode {
-  val: number;
+  value: number;
   left: TreeNode;
   right: TreeNode;
-  next: TreeNode;
+
 
   constructor(value, left = null, right = null) {
-    this.val = value;
+    this.value = value;
     this.left = left;
     this.right = right;
-    this.next = null;
   }
 
-  // level order traversal using 'next' pointer
-  // tree traversal using 'next' pointer
-  print_tree() {
-    process.stdout.write("Traversal using 'next' pointer: ");
-    let current: TreeNode = this;
-    while (current !== null) {
-      process.stdout.write(`${current.val} `);
-      current = current.next;
-    }
-  }
+  // print_list() {
+  //   let stack = [];
+  //   let x: Node = this;
+  //   while (!!x) {
+  //     stack.push(x.value);
+  //     x = x.next as Node;
+  //   }
+  //   return stack.join(',');
+  // }
 }
 
-function tree_right_view(root: TreeNode): TreeNode[] {
+function traverse(root: TreeNode): number[][] {
   let queue = [root];
-  let leftNodes = [];
+  let levelOrder = [];
   while (queue.length > 0) {
-    let queueLength = queue.length;
-    let currentLevel = [];
+    const currLevel = [];
+    let queueLength = queue.length; // the queueLength here is equivalent to the size of the level from the last iteration
     for (let i = 0; i < queueLength; i++) {
       let curr = queue.shift();
       if (curr.left) {
         queue.push(curr.left);
       }
+
       if (curr.right) {
         queue.push(curr.right);
       }
-      currentLevel.push(curr);
+
+      currLevel.push(curr.value);
     }
 
-    const x = currentLevel.pop();
-    leftNodes.push(x);
+    levelOrder.push(currLevel);
   }
-  return leftNodes;
+  // console.log(levelOrder);
+  return levelOrder;
 }
-
-
 
 const root = new TreeNode(12);
 root.left = new TreeNode(7);
@@ -59,9 +57,4 @@ root.right = new TreeNode(1);
 root.left.left = new TreeNode(9);
 root.right.left = new TreeNode(10);
 root.right.right = new TreeNode(5);
-root.left.left.left = new TreeNode(3);
-let result = tree_right_view(root);
-process.stdout.write('Tree right view: ');
-for (let i = 0; i < result.length; i++) {
-  process.stdout.write(`${result[i].val}`);
-}
+tester([[12], [7, 1], [9, 10, 5]], traverse(root));

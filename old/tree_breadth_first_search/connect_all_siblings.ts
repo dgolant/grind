@@ -28,29 +28,47 @@ class TreeNode {
   }
 }
 
-function tree_right_view(root: TreeNode): TreeNode[] {
+function enqueue(queue: TreeNode[], node: TreeNode) {
+  if (node.left) {
+    queue.push(node.left);
+  }
+  if (node.right) {
+    queue.push(node.right);
+  }
+}
+
+function connect_all_siblings(root: TreeNode): TreeNode {
   let queue = [root];
-  let leftNodes = [];
+
+  let finalPrevLevel;
   while (queue.length > 0) {
-    let queueLength = queue.length;
-    let currentLevel = [];
-    for (let i = 0; i < queueLength; i++) {
-      let curr = queue.shift();
+    const levelSize = queue.length;
+    let prev;
+    let curr;
+    for (let i = 0; i < levelSize; i++) {
+      curr = queue.shift();
+
       if (curr.left) {
         queue.push(curr.left);
       }
+
       if (curr.right) {
         queue.push(curr.right);
       }
-      currentLevel.push(curr);
+
+      if (!prev && finalPrevLevel) {
+        console.log(finalPrevLevel.val);
+        finalPrevLevel.next = curr;
+      }
+      if (prev) {
+        prev.next = curr;
+      }
+      prev = curr;
     }
 
-    const x = currentLevel.pop();
-    leftNodes.push(x);
+    finalPrevLevel = curr;
   }
-  return leftNodes;
 }
-
 
 
 const root = new TreeNode(12);
@@ -59,9 +77,5 @@ root.right = new TreeNode(1);
 root.left.left = new TreeNode(9);
 root.right.left = new TreeNode(10);
 root.right.right = new TreeNode(5);
-root.left.left.left = new TreeNode(3);
-let result = tree_right_view(root);
-process.stdout.write('Tree right view: ');
-for (let i = 0; i < result.length; i++) {
-  process.stdout.write(`${result[i].val}`);
-}
+connect_all_siblings(root);
+root.print_tree();
