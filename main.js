@@ -1,5 +1,3 @@
-const Deque = require('./collections/deque'); //http://www.collectionsjs.com
-
 class TreeNode {
   constructor(val, left = null, right = null) {
     this.val = val;
@@ -11,7 +9,7 @@ class TreeNode {
 
 function find_paths(root, sum) {
   allPaths = [];
-  find_paths_recursive(root, sum, new Deque(), allPaths);
+  find_paths_recursive(root, sum, [], allPaths);
   return allPaths;
 }
 
@@ -27,7 +25,7 @@ function find_paths_recursive(currentNode, sum, currentPath, allPaths) {
   // if the current node is a leaf and its value is equal to sum, save the current path
   if (currentNode.val === sum && currentNode.left === null
     && currentNode.right === null) {
-    allPaths.push(currentPath.toArray());
+    allPaths.push(currentPath);
   } else {
     // traverse the left sub-tree
     find_paths_recursive(currentNode.left, sum - currentNode.val, currentPath, allPaths);
